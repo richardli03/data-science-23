@@ -56,7 +56,9 @@ In this first stage, you will explore the `diamonds` dataset and document your o
 ## TASK: Plot `price` vs `carat` below
 ## Your code here!
 
-ggplot(diamonds) + geom_point(aes(x = carat, y = price))
+diamonds %>% 
+  ggplot(aes(x = carat, y = price)) + 
+  geom_point()
 
 ```
 
@@ -69,7 +71,9 @@ Generally, as the carat of a diamond increases, so does its price. Furthermore, 
 ```{r q2-task}
 ## TASK: Plot `price`, `carat`, and `cut` below
 ## Your code here!
-ggplot(diamonds) + geom_point(aes(x = carat, y = price, color = cut))
+diamonds %>% 
+  ggplot(aes(x = carat, y = price, color = cut)) + 
+  geom_point()
 ```
 
 **Observations**:
