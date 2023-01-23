@@ -55,24 +55,28 @@ In this first stage, you will explore the `diamonds` dataset and document your o
 ```{r q1-task}
 ## TASK: Plot `price` vs `carat` below
 ## Your code here!
+
+ggplot(diamonds) + geom_point(aes(x = carat, y = price))
+
 ```
 
 **Observations**:
 
-- (Write your observations here!)
+Generally, as the carat of a diamond increases, so does its price. Furthermore, we see "walls" at various carat points where the price of diamonds can scale wildly at 1,2,3, etc. carats. This could be and indication that there are other factors that aren't being considered here affecting the data spread. Also, the carat of the average diamond gravitates much more to a whole number carat than some value in between (like 2.5 carats). Finally, we notice that there are fewer and fewer diamonds the higher carat we reach, indicative of the rarity of diamonds at those carat values.  
 
 ### __q2__ Create a visualization showing variables `carat`, `price`, and `cut` simultaneously. Experiment with which variable you assign to which aesthetic (`x`, `y`, etc.) to find an effective visual.
 
 ```{r q2-task}
 ## TASK: Plot `price`, `carat`, and `cut` below
 ## Your code here!
+ggplot(diamonds) + geom_point(aes(x = carat, y = price, color = cut))
 ```
 
 **Observations**:
 
-- (Write your observations here!)
+We notice that carat and cut quality scale with price, which makes total sense knowing that higher carat diamonds and higher quality cuts of a diamond tend to indicate a more valuable diamond. The other observations made regarding the previous plot also still hold here, but we can now see that part of what motivates those "walls" is the cut quality of the diamonds. High quality cuts will always be expensive, regardless of carat. 
 
-
+Additionally, we can observe that there aren't actually that many lower quality cuts -- this is also not surprising, as there aren't really any jewelers who would happily do business with diamonds that are cut poorly.
 # Communication
 <!-- -------------------------------------------------- -->
 
