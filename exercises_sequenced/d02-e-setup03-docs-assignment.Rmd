@@ -31,6 +31,7 @@ associated with `"dplyr"`. What vignettes are available?
 
 ```{r q1-task, eval=FALSE}
 ## TODO: Re-write the code above following the tidyverse style guide
+vignette(package = "dplyr")
 ```
 
 
@@ -47,6 +48,7 @@ only those rows of the `iris` dataset where `Species == "setosa"`.
 iris %>%
   as_tibble() %>%
   filter(
+    Species == "setosa"
     # TODO: Filter on Species "setosa"
   )
 ```
@@ -68,6 +70,12 @@ with `Sepal.Length` between `5.1` and `6.4`?
 
 ```{r q3-task}
 ## TODO: Consult the docs; Write your code here
+iris %>%
+  as_tibble() %>%
+  filter(
+    5.1 <= Sepal.Length, 
+    Sepal.Length <= 6.4
+  )
 ```
 
 
