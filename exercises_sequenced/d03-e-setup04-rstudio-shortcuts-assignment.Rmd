@@ -33,19 +33,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
     * `Alt` + `-`
 
+It makes a <- which is the assignment operator. 
 
     * `Shift` + `Cmd/Ctrl` + `M`
-
+It makes a %>%  which is the pipe operator
 
     * `Cmd/Ctrl` + `Enter`
 
-
+Runs a code line
     * `F1` (Note: on a Mac you need to press `fn` + `F1`)
 
 
 	* `Cmd/Ctrl` + `Shift` + `C`
 
-
+Block comments.
 
 * Within R Markdown
 
@@ -59,16 +60,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
     * `Ctrl` + `I` (`Cmd` + `I`)
 
-
 Try this below!
 
 ```{r}
 ## Re-indent these lines
 c(
   "foo",
-    "bar",
-      "goo",
-        "gah"
+  "bar",
+  "goo",
+  "gah"
 )
 ```
 

@@ -34,9 +34,15 @@ summarize(group_by(diamonds, cut), mean_price = mean(price))
 
 ```{r q1-solution}
 ## TODO: Re-write the code above following the tidyverse style guide
+diamonds %>%
+  group_by(cut) %>%
+  summarize(
+    mean_price = mean(price)
+  )
 ```
 
 ### __q2__ Re-write according to the style guide
+
 
 *Hint*: There are *particular rules* about spacing!
 
