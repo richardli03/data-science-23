@@ -11,9 +11,7 @@ prerequisites:
 
 *Purpose*: How do we apply hypothesis testing to investigating data? In this challenge you'll practice using hypothesis testing tools to make sense of a dataset.
 
-*Reading*:
-- [Harvard Study Says SATs Should Be Optional: Here's Why](https://www.csmonitor.com/USA/USA-Update/2016/0120/Harvard-study-says-SATs-should-be-optional.-Here-s-why) (Optional); easy-to-read news article on colleges going SAT-free
-- [Norm-Referenced Tests and Race-Blind Admissions](https://cshe.berkeley.edu/publications/norm-referenced-tests-and-race-blind-admissions-case-eliminating-sat-and-act-university) (Optional); technical report on relationship between the SAT/ACT and non-academic factors
+*Reading*: - [Harvard Study Says SATs Should Be Optional: Here's Why](https://www.csmonitor.com/USA/USA-Update/2016/0120/Harvard-study-says-SATs-should-be-optional.-Here-s-why) (Optional); easy-to-read news article on colleges going SAT-free - [Norm-Referenced Tests and Race-Blind Admissions](https://cshe.berkeley.edu/publications/norm-referenced-tests-and-race-blind-admissions-case-eliminating-sat-and-act-university) (Optional); technical report on relationship between the SAT/ACT and non-academic factors
 
 *Credit*: This is based on a [case study](http://onlinestatbook.com/2/case_studies/sat.html) originally prepared by Emily Zitek, with data collected through the research of Thomas MacFarland.
 
@@ -26,24 +24,28 @@ library(rsample)
 ```
 
 <!-- include-rubric -->
+
 # Grading Rubric
+
 <!-- -------------------------------------------------- -->
 
 Unlike exercises, **challenges will be graded**. The following rubrics define how you will be graded, both on an individual and team basis.
 
 ## Individual
+
 <!-- ------------------------- -->
 
-| Category | Needs Improvement | Satisfactory |
-|----------|----------------|--------------|
-| Effort | Some task __q__'s left unattempted | All task __q__'s attempted |
-| Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
-| Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
-| Assessed | Observations include claims not supported by the data, or reflect a level of certainty not warranted by the data | Observations are appropriately qualified by the quality & relevance of the data and (in)conclusiveness of the support |
-| Specified | Uses the phrase "more data are necessary" without clarification | Any statement that "more data are necessary" specifies which *specific* data are needed to answer what *specific* question |
-| Code Styled | Violations of the [style guide](https://style.tidyverse.org/) hinder readability | Code sufficiently close to the [style guide](https://style.tidyverse.org/) |
+| Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
+|------------------|-----------------------------|-------------------------|
+| Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
+| Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
+| Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
+| Assessed    | Observations include claims not supported by the data, or reflect a level of certainty not warranted by the data | Observations are appropriately qualified by the quality & relevance of the data and (in)conclusiveness of the support      |
+| Specified   | Uses the phrase "more data are necessary" without clarification                                                  | Any statement that "more data are necessary" specifies which *specific* data are needed to answer what *specific* question |
+| Code Styled | Violations of the [style guide](https://style.tidyverse.org/) hinder readability                                 | Code sufficiently close to the [style guide](https://style.tidyverse.org/)                                                 |
 
 ## Due Date
+
 <!-- ------------------------- -->
 
 All the deliverables stated in the rubrics above are due **at midnight** before the day of the class discussion of the challenge. See the [Syllabus](https://docs.google.com/document/d/1qeP6DUS8Djq_A0HMllMqsSqX3a9dbcx1/edit?usp=sharing&ouid=110386251748498665069&rtpof=true&sd=true) for more information.
@@ -51,37 +53,38 @@ All the deliverables stated in the rubrics above are due **at midnight** before 
 *Background*: Every year about 2 million students take the Scholastic Aptitude Test (SAT). The exam is [controversial](http://www.nea.org/home/73288.htm) but [extremely consequential](https://www.csmonitor.com/2004/0518/p13s01-legn.html). There are many claims about the SAT, but we're going to look at just one: Is the SAT predictive of scholastic performance in college? It turns out this is a fairly complicated question to assess---we'll get an introduction to some of the complexities.
 
 # Obtain the Data
+
 <!-- -------------------------------------------------- -->
 
-### __q1__ Visit the [SAT and College GPA](http://onlinestatbook.com/2/case_studies/sat.html) case study page, scroll to the bottom, and click the `Open Data with Excel` button. This will allow you to download an `xls` file. Save the file to your `data` folder, load the data as `df_sat`, and perform your "first checks" against these data. Answer the questions below:
+### **q1** Visit the [SAT and College GPA](http://onlinestatbook.com/2/case_studies/sat.html) case study page, scroll to the bottom, and click the `Open Data with Excel` button. This will allow you to download an `xls` file. Save the file to your `data` folder, load the data as `df_sat`, and perform your "first checks" against these data. Answer the questions below:
 
 ```{r q1-task}
 ## TODO:
-df_sat <- NA
+df_sat <- read_xls("data/sat.xls") %>%
+  glimpse()
 
 ## TODO: Do your "first checks"
 ```
 
 **Observations**:
 
-- Fill in the following "data dictionary"
+-   Fill in the following "data dictionary"
 
-| Column     | Meaning |
-|------------|---------|
-| `high_GPA` | ???     |
-| `math_SAT` | ???     |
-| `verb_SAT` | ???     |
-| `comp_GPA` | ???     |
-| `univ_GPA` | ???     |
+| Column     | Meaning                       |
+|------------|-------------------------------|
+| `high_GPA` | high school GPA               |
+| `math_SAT` | SAT score on the math section |
+| `verb_SAT` | verbal SAT score              |
+| `comp_GPA` | computer science GPA          |
+| `univ_GPA` | overall university GPA        |
 
-- What information do we have about these students?
-  - (Your response here)
-- What kinds of information *do we not have* about these students?
-  - (Your response here)
-- Based on these missing variables, what possible effects could be present in the data that we would have *no way of detecting*?
-  - (Your response here)
+-   What information do we have about these students? We have information on their GPA in high school and university, as well as a specific subsection of that GPA that would be classified "computer science" -- presumably, this is the material that "matters more," given they're graduating with a B.S. in computer science.
+-   What kinds of information *do we not have* about these students? Truthfully, we have no idea what kind of students they are, whether they're participating in clubs, creating businesses, starting non-profits, taking care of siblings, what impact their families (or perhaps lack thereof) have on them... it's exactly what students rail against -- we're turning "student quality" into a set of numbers.
+-   Based on these missing variables, what possible effects could be present in the data that we would have *no way of detecting*?
+    -   Like I mentioned, there are a variety of things that can impact a student's ability to perform on a test + achieve a high grade point average that aren't quantified here. If they experienced a death in the family right before they took the SAT, I would expect them to score lower. If they had to take care of their little siblings every day after school, I wouldn't be shocked if their GPAs were lower. These factors are simply things we have no way of understanding.
 
 # Analysis with Hypothesis Testing
+
 <!-- ----------------------------------------------------------------------- -->
 
 We're going to use two complementary approaches to analyze the data, the first based on hypothesis testing of correlation coefficients, and the second based on fitting a regression model and interpreting the regression coefficients.
@@ -96,31 +99,47 @@ df_composite <-
 ```
 
 ## View 1: Correlations
+
 <!-- ----------------------------------------------------------------------- -->
 
-### __q2__ Create a *single* plot that shows `univ_GPA` against *both* `high_GPA` and `both_SAT`. Visually compare the two trends.
+### **q2** Create a *single* plot that shows `univ_GPA` against *both* `high_GPA` and `both_SAT`. Visually compare the two trends.
 
 *Hint*: One way to do this is to first *pivot* `df_composite`.
 
 ```{r q2-task}
 ## TODO:
+
+df_composite %>%
+  ggplot(aes( x= univ_GPA))+
+  geom_point(aes(y = both_SAT), color = "blue") + 
+  geom_point(aes(y = high_GPA), color = "red")
+  # scale_y_continuous(
+  # 
+  # )
+  # WHY IS IT SO IMPOSSIBLE TO GET A SECOND AXIS TO WORK
+  
+ 
+df_composite %>%
+  ggplot(aes( x= univ_GPA))+
+  geom_point(aes(y = both_SAT), color = "blue")
+
+df_composite %>%
+  ggplot(aes( x= univ_GPA))+
+  geom_point(aes(y = high_GPA), color = "blue") 
 ```
 
 **Observations**:
 
-- What relationship do `univ_GPA` and `both_SAT` exhibit?
-  - (Your response here)
-- What relationship do `univ_GPA` and `high_GPA` exhibit?
-  - (Your response here)
+-   What relationship do `univ_GPA` and `both_SAT` exhibit?
+    -   It appears that there's a positive correlation between university GPA and SAT score, though it seems to almost be exponential in it's relationship\...
+-   What relationship do `univ_GPA` and `high_GPA` exhibit?
+    -   It seems like a mildly linear positive correlation between university GPA and high school GPA
 
 ### Hypothesis Testing with a Correlation Coefficient
+
 <!-- ------------------------- -->
 
-We can use the idea of hypothesis testing with a correlation coefficient. The
-idea is to set our null hypothesis to the case where there is no correlation,
-and test to see if the data contradict that perspective. Formally, the null (H0)
-and alternative (HA) hypotheses relating to a correlation coefficient between
-two variables `X, Y` are:
+We can use the idea of hypothesis testing with a correlation coefficient. The idea is to set our null hypothesis to the case where there is no correlation, and test to see if the data contradict that perspective. Formally, the null (H0) and alternative (HA) hypotheses relating to a correlation coefficient between two variables `X, Y` are:
 
 $$\text{H0: } \text{Corr}[X, Y] = 0$$
 
@@ -128,59 +147,99 @@ $$\text{HA: } \text{Corr}[X, Y] \neq 0$$
 
 The R function `cor.test` implements such a hypothesis test under the assumption that `X, Y` are both normally distributed. First, let's check to see if this assumption looks reasonable for our data.
 
-### __q3__ Plot histograms for `both_SAT, high_GPA, univ_GPA`. Which---if any---of the variables look approximately normally distributed.
+### **q3** Plot histograms for `both_SAT, high_GPA, univ_GPA`. Which---if any---of the variables look approximately normally distributed.
 
 ```{r q3-task}
+df_composite %>%
+  ggplot()+
+  geom_histogram(aes(x = both_SAT))
+
+
+df_composite %>%
+  ggplot()+
+  geom_histogram(aes(x = high_GPA))
+
+df_composite %>%
+  ggplot()+
+  geom_histogram(aes(x = univ_GPA))
 ```
 
 **Observations**:
 
-- To what extent does `both_SAT` look like a normal distribution?
-  - (Your response here)
-- To what extent does `high_GPA` look like a normal distribution?
-  - (Your response here)
-- To what extent does `univ_GPA` look like a normal distribution?
-  - (Your response here)
+-   To what extent does `both_SAT` look like a normal distribution?
+    -   It looks to be slightly right-skewed, but I would believe it could potentially be a normal distribution.
+-   To what extent does `high_GPA` look like a normal distribution?
+    -   Personally, I think it's the closest thing to a normal distribution that exists out of our choices.
+-   To what extent does `univ_GPA` look like a normal distribution?
+    -   It really doesn't look like a normal distribution at all. There's an incredibly intense left skew that makes it really hard to argue that this could even approximate a normal distribution.
 
 Keep in mind your findings as you complete q4.
 
-### __q4__ Use the function `cor.test()` to construct confidence intervals for `corr[high_GPA, univ_GPA` and `corr[both_SAT, univ_GPA]`. Answer the questions below.
+### **q4** Use the function `cor.test()` to construct confidence intervals for `corr[high_GPA, univ_GPA` and `corr[both_SAT, univ_GPA]`. Answer the questions below.
 
 ```{r q4-task}
 ## TODO: Use the function cor.test() to test the correlations between
 ##       high_GPA and univ_GPA, as well as between
 ##       both_SAT and univ_GPA
+
+cor_high_uni <- cor.test(df_composite$high_GPA, df_composite$univ_GPA)
+cor_both_uni <- cor.test(df_composite$both_SAT, df_composite$univ_GPA)
+
+
+
+cor_high_uni
+cor_both_uni
+
+cor_high_both <- cor.test(df_composite$both_SAT, df_composite$high_GPA)
+cor_high_both
+
 ```
 
 **Observations**:
 
-- Which correlations are significantly nonzero?
-  - (Your response here)
-- Which of `high_GPA` and `both_SAT` seems to be more strongly correlated with `univ_GPA`?
-  - (Your response here)
-- How do the results here compare with the visual you created in q2?
-  - (Your response here)
-- Based on these results, what can we say about the predictive capabilities of both `high_GPA` and `both_SAT` to predict `univ_GPA`?
-  - (Your response here)
+-   Which correlations are significantly nonzero?
+    -   Both correlations are significantly nonzero, though the high_GPA is higher.
+-   Which of `high_GPA` and `both_SAT` seems to be more strongly correlated with `univ_GPA`?
+    -   high_GPA appears to be more strongly correlated with univ_GPA, because it has a higher correlation value.
+-   How do the results here compare with the visual you created in q2?
+    -   high_GPA and univ_GPA's distributions seem to be significantly closer to each other (when compared to both_SAT v.s. univ_GPA).
+-   Based on these results, what can we say about the predictive capabilities of both `high_GPA` and `both_SAT` to predict `univ_GPA`?
+    -   I suppose, given a new high_GPA, we could make guesses for what kinds of univ_GPA would correspond *slightly* better than if we were given a new SAT composite score.
 
 Finally, let's use the bootstrap to perform the same test using *different* assumptions.
 
-### __q5__ Use the bootstrap to approximate a confidence interval for `corr[high_GPA, univ_GPA`. Compare your results---both the estimate and confidence interval---to your results from q4.
+### **q5** Use the bootstrap to approximate a confidence interval for `corr[high_GPA, univ_GPA`. Compare your results---both the estimate and confidence interval---to your results from q4.
 
 ```{r q5-task}
 ## TODO: Use the bootstrap to compute a confidence interval for corr[high_GPA, univ_GPA]
+n <- 1000
+
+df_q5 <- df_composite %>% 
+  bootstraps(times = n)%>%
+  mutate(
+    df = map(
+      splits,
+      ~ analysis(.x)
+    )
+  )%>%
+  slice(1:9) %>%
+  unnest(df)
+
+cor.test(df_q5$high_GPA, df_q5$univ_GPA)
+cor.test(df_q5$both_SAT, df_q5$univ_GPA)
 ```
 
 **Observations**:
 
-- How does your estimate from q5 compare with your estimate from q4?
-  - (Your response here)
-- How does your CI from q5 compare with your CI from q4?
-  - (Your response here)
+-   How does your estimate from q5 compare with your estimate from q4?
+    -   The two estimates are very similiar.
+-   How does your CI from q5 compare with your CI from q4?
+    -   It appears that q5's CI is significantly smaller than the CI from q4.
 
 *Aside*: When you use two different approximations to compute the same quantity and get similar results, that's an *encouraging sign*. Such an outcome lends a bit more credibility to the results.
 
 ## View 2: Modeling
+
 <!-- ------------------------- -->
 
 Correlations are useful for relating two variables at a time. To study the relationship among more variables we can instead use a fitted model. Using a model, we can also help assess whether it is *worthwhile* to measure a variable.
@@ -207,6 +266,7 @@ df_validate <-
 ```
 
 ### Hypothesis Testing with a Model
+
 <!-- ------------------------- -->
 
 We can combine the ideas of hypothesis testing with a model. Using a model, we can express our hypotheses in terms of the model parameters. For instance, if we were interested in whether $X$ has an affect on $Y$, we might set up a model:
@@ -221,11 +281,13 @@ $$\text{HA}: \beta \neq 0$$
 
 In this case, we're testing for whether $X$ has a significant effect on $Y$. Let's apply this idea to relating the variables `univ_GPA` and `high_GPA`. Luckily R has built-in tools to construct a confidence interval on the $\beta$'s in a regression [1]; we'll simply use those tools rather than do it by hand.
 
-### __q6__ Fit a linear model predicting `univ_GPA` with the predictor `both_SAT`. Assess the model to determine how effective a predictor `both_SAT` is for `univ_GPA`. Interpret the resulting confidence interval for the coefficient on `both_SAT`.
+### **q6** Fit a linear model predicting `univ_GPA` with the predictor `both_SAT`. Assess the model to determine how effective a predictor `both_SAT` is for `univ_GPA`. Interpret the resulting confidence interval for the coefficient on `both_SAT`.
 
 ```{r q6-task}
 ## TODO: Fit a model of univ_GPA on the predictor both_SAT
-fit_basic <- NA
+fit_basic <- lm(df_train$univ_GPA ~ df_train$both_SAT)
+
+fit_basic
 
 ## NOTE: The following computes confidence intervals on regression coefficients
 fit_basic %>%
@@ -237,43 +299,62 @@ fit_basic %>%
 
 **Observations**:
 
-- What is the confidence interval on the coefficient of `both_SAT`? Is this coefficient significantly different from zero?
-  - (Your response here)
-- By itself, how well does `both_SAT` predict `univ_GPA`?
-  - (Your response here)
+-   What is the confidence interval on the coefficient of `both_SAT`? Is this coefficient significantly different from zero?
+    -   the confidence interval spans [0.0017, 0.0034]. It doesn't include 0 in its confident interval, so it appears significantly different
+-   By itself, how well does `both_SAT` predict `univ_GPA`?
+    -   By itself, both_SAT seems to predict univ_GPA alright because the p.value is 1.081652\^(-11). That's pretty significantly less than 0.05, which makes me think it's okay.
 
 Remember from `e-model03-interp-warnings` that there are challenges with interpreting regression coefficients! Let's investigate that idea further.
 
-### __q7__ Fit a model predicting `univ_GPA` using both `high_GPA` and `both_SAT`. Compare the prediction accuracy and hypothesis test results.
+### **q7** Fit a model predicting `univ_GPA` using both `high_GPA` and `both_SAT`. Compare the prediction accuracy and hypothesis test results.
 
 ```{r q7-task}
 ## TODO: Fit and assess models with predictors both_SAT + high_GPA, and high_GPA alone
+fit_hiGPA <- lm(df_train$univ_GPA ~ df_train$high_GPA)
+
+## NOTE: The following computes confidence intervals on regression coefficients
+fit_hiGPA %>%
+  tidy(
+    conf.int = TRUE,
+    conf.level = 0.99
+  )
+
+## TODO: Fit and assess models with predictors both_SAT + high_GPA, and high_GPA alone
+fit_boSAT <- lm(df_train$univ_GPA ~ (df_train$high_GPA + df_train$both_SAT))
+## NOTE: The following computes confidence intervals on regression coefficients
+fit_boSAT %>%
+  tidy(
+    conf.int = TRUE,
+    conf.level = 0.99
+  )
 ```
 
 **Observations**:
 
-- How well do these models perform, compared to the one you built in q6?
-  - (Your response here)
-- What is the confidence interval on the coefficient of `both_SAT` when including `high_GPA` as a predictor?? Is this coefficient significantly different from zero?
-  - (Your response here)
-- How do the hypothesis test results compare with the results in q6?
-  - (Your response here)
+-   How well do these models perform, compared to the one you built in q6?
+    -   better, the high_GPA has a lower p-value than the both_SAT model in q6.
+-   What is the confidence interval on the coefficient of `both_SAT` when including `high_GPA` as a predictor?? Is this coefficient significantly different from zero?
+    -   both_SAT confidence interval [-0.00067, 0.0017], this isn't significantly different from 0 because it includes 0.
+-   How do the hypothesis test results compare with the results in q6?
+    -   This test appears to determine that high_GPA is a better predictor of univ_GPA than both_SAT, as it has a lower p-value.
 
 ## Synthesize
+
 <!-- ------------------------- -->
 
 Before closing, let's synthesize a bit from the analyses above.
 
-### __q8__ Using the results from all previous q's, answer the following questions.
+### **q8** Using the results from all previous q's, answer the following questions.
 
 **Observations**:
 
-- Between `both_SAT` and `high_GPA`, which single variable would you choose to predict `univ_GPA`? Why?
-  - (Your response here)
-- Is `both_SAT` an effective predictor of `univ_GPA`? What specific pieces of evidence do you have in favor of `both_SAT` being effective? What specific pieces of evidence do you have against?
-  - (Your response here)
+-   Between `both_SAT` and `high_GPA`, which single variable would you choose to predict `univ_GPA`? Why?
+    -   high_GPA. It has a lower p-value, and thus suggestions that high_GPA is more statistically significant in the model.
+-   Is `both_SAT` an effective predictor of `univ_GPA`? What specific pieces of evidence do you have in favor of `both_SAT` being effective? What specific pieces of evidence do you have against?
+    -   What does it mean for something be an "effective predictor". It *technically* correlates with univ_GPA, but it's just... worse, than high_GPA. I feel like it's hard to argue that both_SAT is "effective" in this context.
 
 # End Notes
+
 <!-- ----------------------------------------------------------------------- -->
 
 [1] There are also assumptions underlying this kind of testing, for more information see this [Wiki article](https://en.wikipedia.org/wiki/Linear_regression#Assumptions).
