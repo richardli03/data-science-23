@@ -26,7 +26,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|-------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+|--------------|----------------------------|-------------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -77,7 +77,7 @@ df_titanic %>% summarize(total = sum(n))
 -   Are there any differences?
     -   Yes. Wikipedia says that there were 2224 passengers and crew aboard the titanic, but the dataset only includes 2201 people.
 -   If yes, what might account for those differences?
-    -   These differences might come from unidentifiable bodies that didn't posses the necessary categories to be included in the dataset. Alternatively, there may have been a few people who for some reason or another were unable to make the Titanic's voyage after purchasing a ticket. Additionally, there may have been people who were travelling under aliases or whose names were lost. Wikipedia's statistic is only an estimate.
+    -   These differences might come from unidentifiable bodies that didn't posses the necessary categories to be included in the dataset. Alternatively, there may have been a few people who for some reason or another were unable to make the Titanic's voyage after purchasing a ticket. Additionally, there may have been people who were travelling under aliases or whose names were lost. It's difficult to say which one is *more* accurate, since both of our datasets merely try to estimate the number of folks aboard the Titanic.
 
 ### **q3** Create a plot showing the count of persons who *did* survive, along with aesthetics for `Class` and `Sex`. Document your observations below.
 
@@ -94,7 +94,7 @@ df_titanic %>%
 **Observations**:
 
 -   The number of female passengers saved far outnumbers the number of males saved in 1st and 2nd class, are roughly equal in 3rd and swing drastically in the male direction for crew. Now, raw numerical data like this rarely ever a helpful statistic to utilize in drawing conclusions like this, because, for instance, the high male survival rate in crew could be indicative of the crew being a majority male, not men running to the front of the line.
--   Even with these biased datasets though, I'm tempted to draw conclusions like "the men in 1st and 2nd class were taught this concept of 'chivalry' and so sacrificed themselves so a higher proportion of women would survive..." which is dangerous to do without a more accurate look into what biases I may or may not have considered.
+-   Based upon this biased visualization of the data, I'm tempted to draw conclusions like "the men in 1st and 2nd class were taught this concept of 'chivalry' and so sacrificed themselves so a higher proportion of women would survive..." which is dangerous to do without a more accurate look into what biases I may or may not have considered.
 
 # Deeper Look
 
@@ -145,7 +145,7 @@ df_prop %>%
 df_prop %>%
   filter(Survived == "Yes") %>%
   ggplot() + 
-  geom_col(aes(x = Class, y = Prop, fill = Sex)) +
+  geom_col(aes(x = Class, y = Prop, fill = Sex), position = "dodge") +
   facet_grid(rows = vars(Age))
 ```
 

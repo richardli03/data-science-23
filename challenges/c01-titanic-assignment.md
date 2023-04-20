@@ -150,8 +150,9 @@ df_titanic %>% summarize(total = sum(n))
     Alternatively, there may have been a few people who for some reason
     or another were unable to make the Titanic’s voyage after purchasing
     a ticket. Additionally, there may have been people who were
-    travelling under aliases or whose names were lost. Wikipedia’s
-    statistic is only an estimate.
+    travelling under aliases or whose names were lost. It’s difficult to
+    say which one is *more* accurate, since both of our datasets merely
+    try to estimate the number of folks aboard the Titanic.
 
 ### **q3** Create a plot showing the count of persons who *did* survive, along with aesthetics for `Class` and `Sex`. Document your observations below.
 
@@ -176,7 +177,7 @@ df_titanic %>%
   conclusions like this, because, for instance, the high male survival
   rate in crew could be indicative of the crew being a majority male,
   not men running to the front of the line.
-- Even with these biased datasets though, I’m tempted to draw
+- Based upon this biased visualization of the data, I’m tempted to draw
   conclusions like “the men in 1st and 2nd class were taught this
   concept of ‘chivalry’ and so sacrificed themselves so a higher
   proportion of women would survive…” which is dangerous to do without a
@@ -264,11 +265,11 @@ additional variables!
 df_prop %>%
   filter(Survived == "Yes") %>%
   ggplot() + 
-  geom_col(aes(x = Class, y = Prop, fill = Sex)) +
+  geom_col(aes(x = Class, y = Prop, fill = Sex), position = "dodge") +
   facet_grid(rows = vars(Age))
 ```
 
-    ## Warning: Removed 2 rows containing missing values (`position_stack()`).
+    ## Warning: Removed 2 rows containing missing values (`geom_col()`).
 
 ![](c01-titanic-assignment_files/figure-gfm/q5-task-1.png)<!-- -->
 
