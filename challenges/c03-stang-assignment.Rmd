@@ -26,7 +26,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|-------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+|------------------|--------------------------|-----------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -116,23 +116,45 @@ print("Very good!")
 ### **q2** Perform a basic EDA on the aluminum data *without visualization*. Use your analysis to answer the questions under *observations* below. In addition, add your own *specific* question that you'd like to answer about the data---you'll answer it below in q3.
 
 ```{r q2-task}
-df_stang_long %>% 
-  ggplot(aes(E, nu, color = angle, size = thick)) + 
-  geom_point()
+
+# oops
+# df_stang_long %>% 
+#   ggplot(aes(E, nu, color = angle, size = thick)) + 
+#   geom_point()
+
+
+df_stang_long %>%
+  glimpse()
+
+## UNIQUE ELEMENTS
+thick_counts <- df_stang_long %>%
+  select(thick, alloy, angle) %>%
+  summarise_all(~list(unique(.)))%>%
+  glimpse()
+
+    
+df_stang_long %>%
+  head() %>%
+  glimpse()
+
+df_stang_long %>%
+  tail() %>%
+  glimpse()
 ##
 ```
 
 **Observations**:
 
 -   Is there "one true value" for the material properties of Aluminum?
-    -   NO
+    -   No
 -   How many aluminum alloys are in this dataset? How do you know?
     -   There is one aluminum alloy in this dataset, al_24st.
 -   What angles were tested?
-    -   There were 4 angles that were tests: 0, 25, 50, 75
+    -   There were 3 angles that were tested: 0, 45, 90
 -   What thicknesses were tested?
-    -   4 thicknesses were tested.
+    -   4 thicknesses were tested: 0.022, 0.032, 0.064, and 0.081.
 -   Do thicker alloys of aluminum have higher or lower elasticity?
+    -   It appears that a higher thickness results in a lower E value, which makes me think lower elasticity.
 
 ## Visualize
 
@@ -171,6 +193,7 @@ df_stang_long %>%
 
 -   Does this graph support or contradict the claim above?
     -   This graph appears to contradict the claim above. It's clear to see that the thickness of the material trends in some way with the elasticity of the material. For instance, the lowest elasticity is found solely in the thickest materials, and the most elastic are found solely in the thinnest.
+    -   It's hard for me to say that the evidence is *conclusive*, per se, because there's a number of factors about how these numbers were determined that aren't accounted for here: for instance, elasticity is measured on a machine that could possible slip, yielding the wrong value.
 
 # References
 

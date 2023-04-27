@@ -233,12 +233,65 @@ print("Very good!")
 ### **q2** Perform a basic EDA on the aluminum data *without visualization*. Use your analysis to answer the questions under *observations* below. In addition, add your own *specific* question that you’d like to answer about the data—you’ll answer it below in q3.
 
 ``` r
-df_stang_long %>% 
-  ggplot(aes(E, nu, color = angle, size = thick)) + 
-  geom_point()
+# oops
+# df_stang_long %>% 
+#   ggplot(aes(E, nu, color = angle, size = thick)) + 
+#   geom_point()
+
+
+df_stang_long %>%
+  glimpse()
 ```
 
-![](c03-stang-assignment_files/figure-gfm/q2-task-1.png)<!-- -->
+    ## Rows: 26
+    ## Columns: 5
+    ## $ thick <dbl> 0.022, 0.022, 0.022, 0.022, 0.022, 0.022, 0.032, 0.032, 0.032, 0…
+    ## $ alloy <chr> "al_24st", "al_24st", "al_24st", "al_24st", "al_24st", "al_24st"…
+    ## $ angle <int> 0, 45, 90, 0, 45, 90, 0, 45, 90, 0, 45, 90, 0, 45, 90, 0, 45, 90…
+    ## $ E     <dbl> 10600, 10700, 10500, 10600, 10500, 10700, 10400, 10400, 10300, 1…
+    ## $ nu    <dbl> 0.321, 0.329, 0.310, 0.323, 0.331, 0.323, 0.329, 0.318, 0.322, 0…
+
+``` r
+## UNIQUE ELEMENTS
+thick_counts <- df_stang_long %>%
+  select(thick, alloy, angle) %>%
+  summarise_all(~list(unique(.)))%>%
+  glimpse()
+```
+
+    ## Rows: 1
+    ## Columns: 3
+    ## $ thick <list> <0.022, 0.032, 0.064, 0.081>
+    ## $ alloy <list> "al_24st"
+    ## $ angle <list> <0, 45, 90>
+
+``` r
+df_stang_long %>%
+  head() %>%
+  glimpse()
+```
+
+    ## Rows: 6
+    ## Columns: 5
+    ## $ thick <dbl> 0.022, 0.022, 0.022, 0.022, 0.022, 0.022
+    ## $ alloy <chr> "al_24st", "al_24st", "al_24st", "al_24st", "al_24st", "al_24st"
+    ## $ angle <int> 0, 45, 90, 0, 45, 90
+    ## $ E     <dbl> 10600, 10700, 10500, 10600, 10500, 10700
+    ## $ nu    <dbl> 0.321, 0.329, 0.310, 0.323, 0.331, 0.323
+
+``` r
+df_stang_long %>%
+  tail() %>%
+  glimpse()
+```
+
+    ## Rows: 6
+    ## Columns: 5
+    ## $ thick <dbl> 0.081, 0.081, 0.081, 0.081, 0.081, 0.081
+    ## $ alloy <chr> "al_24st", "al_24st", "al_24st", "al_24st", "al_24st", "al_24st"
+    ## $ angle <int> 90, 0, 45, 90, 0, 90
+    ## $ E     <dbl> 9900, 10100, 9900, 10000, 10000, 9900
+    ## $ nu    <dbl> 0.314, 0.312, 0.312, 0.316, 0.311, 0.314
 
 ``` r
 ##
@@ -247,14 +300,16 @@ df_stang_long %>%
 **Observations**:
 
 - Is there “one true value” for the material properties of Aluminum?
-  - NO
+  - No
 - How many aluminum alloys are in this dataset? How do you know?
   - There is one aluminum alloy in this dataset, al_24st.
 - What angles were tested?
-  - There were 4 angles that were tests: 0, 25, 50, 75
+  - There were 3 angles that were tested: 0, 45, 90
 - What thicknesses were tested?
-  - 4 thicknesses were tested.
+  - 4 thicknesses were tested: 0.022, 0.032, 0.064, and 0.081.
 - Do thicker alloys of aluminum have higher or lower elasticity?
+  - It appears that a higher thickness results in a lower E value, which
+    makes me think lower elasticity.
 
 ## Visualize
 
@@ -312,6 +367,11 @@ df_stang_long %>%
     elasticity of the material. For instance, the lowest elasticity is
     found solely in the thickest materials, and the most elastic are
     found solely in the thinnest.
+  - It’s hard for me to say that the evidence is *conclusive*, per se,
+    because there’s a number of factors about how these numbers were
+    determined that aren’t accounted for here: for instance, elasticity
+    is measured on a machine that could possible slip, yielding the
+    wrong value.
 
 # References
 
