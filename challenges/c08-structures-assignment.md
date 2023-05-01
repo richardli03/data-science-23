@@ -350,14 +350,13 @@ df_norm_sim <-
   mutate(
     g = g_break(strength)
   ) %>%
-## TODO 3: Compute structural response
   glimpse()
 ```
 
     ## Rows: 1,000
     ## Columns: 2
-    ## $ strength <dbl> 39994.09, 39854.27, 40268.25, 40015.97, 40261.81, 39891.34, 3…
-    ## $ g        <dbl> 778.4037, 638.5793, 1052.5595, 800.2870, 1046.1257, 675.6555,…
+    ## $ strength <dbl> 39680.73, 39335.39, 39699.50, 39399.12, 40065.11, 39736.94, 4…
+    ## $ g        <dbl> 465.0426, 119.6997, 483.8155, 183.4308, 849.4285, 521.2556, 1…
 
 ``` r
 ## NOTE: The following code estimates the POF and a 95% confidence interval
@@ -378,20 +377,19 @@ df_norm_pof
 ```
 
     ## # A tibble: 1 × 3
-    ##    pof_lo pof_est pof_hi
-    ##     <dbl>   <dbl>  <dbl>
-    ## 1 0.00898   0.017 0.0250
+    ##   pof_lo pof_est pof_hi
+    ##    <dbl>   <dbl>  <dbl>
+    ## 1 0.0113    0.02 0.0287
 
 - Assuming your scopus is the probability of failure `POF` defined
   above, does your estimate exhibit real variability, induced
   variability, or both?
 
-  - I think you could argue that there is no induced variability because
-    the background information tells us that “The experiments were
-    carried out following the highest standards of experimental rigor,
-    so you should consider these values to be the”true” breaking
-    strength for each sample.” That means that any variability we see we
-    can assume to be real variability in our synthetic experiment.
+  - `POF` is a constant that varies based on the distribution of
+    strength, so because we can assume that the distribution of the
+    strength here isn’t changing, we can assume there is no real
+    variability. As a result, we can assume any existing variability is
+    induced variability.
 
 - Does this confidence interval imply that `POF < 0.03`?
 
@@ -425,9 +423,11 @@ df_norm_pof
 
 - Can you *confidently* conclude that `POF < 0.03`? Why or why not?
 
-  - *Confidently* is a bit of a wishy-washy term to me, but since 0.03
-    is greater than even the upper side of my confidence interval, I
-    suppose I’d have to say yes.
+  - Even though my confidence interval’s upper bound was below 0.03, I
+    still can’t confidently conclude that `POF < 0.03` based on this
+    specific sample because there’s a lot of uncertainty from limited
+    tests. Based purely upon these sources of uncertainty, i cannot
+    trust it.
 
 ## A different way to compute the POF
 
@@ -538,7 +538,7 @@ df_samples %>%
     ## # A tibble: 1 × 6
     ##   term   .lower .estimate .upper .alpha .method   
     ##   <chr>   <dbl>     <dbl>  <dbl>  <dbl> <chr>     
-    ## 1 pof   0.00100    0.0175 0.0463   0.05 percentile
+    ## 1 pof   0.00150    0.0182 0.0501   0.05 percentile
 
 **Observations**:
 

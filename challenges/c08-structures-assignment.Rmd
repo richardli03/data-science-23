@@ -26,7 +26,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|-----------------|--------------------------|-----------------------------|
+|------------------|--------------------------|----------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -197,7 +197,6 @@ df_norm_sim <-
   mutate(
     g = g_break(strength)
   ) %>%
-## TODO 3: Compute structural response
   glimpse()
 
 ## NOTE: The following code estimates the POF and a 95% confidence interval
@@ -219,7 +218,7 @@ df_norm_pof
 
 -   Assuming your scopus is the probability of failure `POF` defined above, does your estimate exhibit real variability, induced variability, or both?
 
-    -   I think you could argue that there is no induced variability because the background information tells us that "The experiments were carried out following the highest standards of experimental rigor, so you should consider these values to be the "true" breaking strength for each sample." That means that any variability we see we can assume to be real variability in our synthetic experiment.
+    -   `POF` is a constant that varies based on the distribution of strength, so because we can assume that the distribution of the strength here isn't changing, we can assume there is no real variability. As a result, we can assume any existing variability is induced variability.
 
 -   Does this confidence interval imply that `POF < 0.03`?
 
@@ -243,7 +242,7 @@ df_norm_pof
 
 -   Can you *confidently* conclude that `POF < 0.03`? Why or why not?
 
-    -   *Confidently* is a bit of a wishy-washy term to me, but since 0.03 is greater than even the upper side of my confidence interval, I suppose I'd have to say yes.
+    -   Even though my confidence interval's upper bound was below 0.03, I still can't confidently conclude that `POF < 0.03` based on this specific sample because there's a lot of uncertainty from limited tests. Based purely upon these sources of uncertainty, i cannot trust it.
 
 ## A different way to compute the POF
 
