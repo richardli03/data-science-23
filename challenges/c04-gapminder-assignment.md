@@ -211,10 +211,10 @@ gapminder %>%
 
 - The dataset states that the median GDPs for each continent go in the
   following order: Africa, Asia, the Americas, Europe, and Oceania.
-- Because we used a boxplot, we can see (roughly) the amount of
-  variation in these datasets: Asia seems to have GDPs that span the
-  widest range, including an outlier that is an order of magnitude ahead
-  of most other continents
+- Because we used a boxplot, we can see the amount of variation in these
+  datasets: Asia seems to have GDPs that span the widest range,
+  including an outlier that is an order of magnitude ahead of most other
+  continents
 - Oceania has barely any variation at all in its data, indicating either
   very homogenous or very little data.
 
@@ -310,23 +310,38 @@ variables; think about using different aesthetics or facets.
 
 ``` r
 ## TASK: Create a visual of gdpPercap vs continent
+
 gapminder %>%
-  filter(year == year_min) %>%
-  ggplot(aes(x = continent, y = gdpPercap))+
-  geom_boxplot() + 
+  filter(year == year_min | year == year_max) %>%
+  ggplot(aes(x = continent, y = gdpPercap)) +
+  geom_boxplot() +
   geom_point(
     data = . %>% filter(country %in% c("Kuwait", "United States", "Canada")),
     mapping = aes(color = country),
     size = 2
-  ) + 
-  scale_y_log10()
+  ) +
+  scale_y_log10() +
+  facet_wrap(~ year, nrow = 1) + 
+  theme(axis.text.x = element_text(angle = 90))
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q4-task-1.png)<!-- -->
 
 **Observations**:
 
-- Write your observations here
+- We can see here that the GDP per capita of the world as a whole has
+  appeared to gone up; every line’s median is higher than where it was
+  before.
+
+- Kuwait used to be really far ahead of the rest of Asia in terms of
+  GDP, but is now in a significantly more reasonable place.
+
+- The United States and Canada have both increased their GDP per capita!
+
+- Africa is still trailing the other continents in terms of median GDP
+  per capita, though the variation has increased since 1952 (indicating
+  that there are improvements disproportionally occurring in some places
+  of Africa)
 
 # Your Own EDA
 
@@ -364,9 +379,22 @@ gapminder %>%
 
 ``` r
 ## TASK: Your second graph
+# gapminder %>%
+#   ggplot(aes(x = gdpPercap, y = lifeExp, color = year))+
+#   geom_point() 
+df_gapminder <- gapminder
+
+
 gapminder %>%
-  ggplot(aes(x = gdpPercap, y = lifeExp, color = year))+
-  geom_point() 
+  mutate(year_interval = cut(year, breaks = seq(1952, 2007, by = 5))) %>%
+  pivot_longer(cols = c(lifeExp, gdpPercap), names_to = "variable", values_to = "value") %>%
+  drop_na() %>%
+  ggplot(aes(x = year_interval, y = value)) +
+  geom_boxplot() +
+  facet_wrap(~variable, scales = "free_y") +
+  ylab("Life Expectancy / GDP per capita") +
+  xlab("Year interval") + 
+  theme(axis.text.x= element_text(angle = 90))
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task2-1.png)<!-- -->
