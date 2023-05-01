@@ -209,14 +209,16 @@ piv_anti
 
 ``` r
 piv_anti %>%
-  ggplot(aes(x = bacteria , y = effectiveness, color = gram, shape = medicine ))+
-  geom_point() + 
-  scale_y_log10()
+  ggplot(aes(x =effectiveness , y =bacteria, color = gram, shape = medicine ))+
+  geom_point(alpha = 0.5) + 
+  scale_x_log10() +
+  theme_minimal()
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.2-1.png)<!-- -->
 
 ``` r
+  # theme(axis.text.x = element_text(angle = 45, hjust = 1))
 # WRITE YOUR CODE HERE
 ```
 
@@ -236,9 +238,9 @@ df_antibiotics %>%
     values_to = "effectiveness",
     cols = c(neomycin, penicillin, streptomycin)
   ) %>%
-  ggplot(aes(fill = medicine, x = bacteria, y = effectiveness)) + 
+  ggplot(aes(fill = medicine, x = effectiveness, y = bacteria)) + 
   geom_col(position = "dodge") + 
-  scale_y_log10()
+  scale_x_log10()
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.3-1.png)<!-- -->
@@ -263,9 +265,9 @@ df_antibiotics %>%
     values_to = "effectiveness",
     cols = c(neomycin, penicillin, streptomycin)
   ) %>%
-  ggplot(aes(x = bacteria, y = effectiveness)) + 
+  ggplot(aes(x = effectiveness, y = bacteria)) + 
   geom_boxplot() + 
-  scale_y_log10()
+  scale_x_log10()
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.4-1.png)<!-- -->
@@ -285,9 +287,11 @@ your other visuals.
 
 ``` r
 piv_anti %>%
-  ggplot(aes(fill = bacteria, x = medicine, y = effectiveness)) + 
-  geom_col(position = "dodge") + 
-  scale_y_log10()
+  group_by(medicine, gram) %>%
+  summarize(count = n(), .groups = "drop") %>%
+  ggplot(aes (x = medicine, y = count, fill = gram))+
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal()
 ```
 
 ![](c05-antibiotics-assignment_files/figure-gfm/q1.5-1.png)<!-- -->
@@ -317,23 +321,23 @@ opportunity to think about why this is.**
 
 *Observations* - What is your response to the question above? -
 
-Neomycin is most effective in treating Diplococcus pneumonia and
-streptococcus hemolyticus and viridans; it also shows effectiveness in
-treating positive gram bacteria.
+Neomycin is least effective in treating Diplococcus pneumonia and
+streptococcus hemolyticus and viridans; it also shows most effectiveness
+in treating negative gram bacteria.
 
-Penicillin is most effective in treating bacteria not of the
-streptococcus, bacillus, and diplococcus genera and generally shows
-better effectiveness in treating negative gram bacteria.
+Penicillin is least effective in treating bacteria not of the
+streptococcus, bacillus, and diplococcus genera and generally shows the
+most effectiveness in treating positive gram bacteria.
 
-Streptomycin is most effective in treating bacteria of the streptococcus
-genera, as well as diplococcus pneumonia. It seems to succeed most
-effectively in positive gram bacteria.
+Streptomycin is least effective in treating bacteria of the
+streptococcus genera, as well as diplococcus pneumonia. It seems to work
+most effectively in negative gram bacteria.
 
 (Write your response here) - Which of your visuals above (1 through 5)
 is **most effective** at helping to answer this question? - (Write your
 response here) - Why? - (Write your response here)
 
-Visuals 1 and 5 were the ones I primarily relied on, because 5 displayed
+Visuals 1 and 3 were the ones I primarily relied on, because 3 displayed
 their treatment effectiveness based upon bacteria type and 1 was my best
 graph for comparing that to gram. However, as a whole, I would say my
 first visual is the weakest visual I produced – it’s really hard to tell
