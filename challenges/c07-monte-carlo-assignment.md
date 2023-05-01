@@ -195,20 +195,17 @@ set will estimate the probability of points landing in that area (see
 n <- 1000 # Choose a sample size
 
 # think of coordinate plane, if sqrt(x^2 + y^2) > 1, it's not on the circle.
-df_q1 <- tibble(x = runif(n,0,1), y = runif(n,0,1)) %>%
+df_q1 <- tibble(
+  x = runif(n,0,1),
+  y = runif(n,0,1)) %>%
   mutate(
-    in_circle = ifelse((sqrt(x^2 - y^2) <= 1),1,0),
+    in_circle = ifelse((sqrt(x^2 + y^2) <= 1),4,0),
     
     # SURELY there is a better way to do this
     in_circle = ifelse(is.na(in_circle), 0, in_circle)
          ) %>%
   summarize(x= x, y = y, total_points = n, stat = in_circle)# Generate the data
 ```
-
-    ## Warning: There was 1 warning in `mutate()`.
-    ## ℹ In argument: `in_circle = ifelse((sqrt(x^2 - y^2) <= 1), 1, 0)`.
-    ## Caused by warning in `sqrt()`:
-    ## ! NaNs produced
 
     ## Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in
     ## dplyr 1.1.0.
@@ -217,34 +214,32 @@ df_q1 <- tibble(x = runif(n,0,1), y = runif(n,0,1)) %>%
     ##   always returns an ungrouped data frame and adjust accordingly.
 
 ``` r
-df_q1 
+df_q1 %>%
+  head()
 ```
 
-    ## # A tibble: 1,000 × 4
-    ##         x      y total_points  stat
-    ##     <dbl>  <dbl>        <dbl> <dbl>
-    ##  1 0.555  0.508          1000     1
-    ##  2 0.246  0.808          1000     0
-    ##  3 0.399  0.287          1000     1
-    ##  4 0.905  0.119          1000     1
-    ##  5 0.806  0.0419         1000     1
-    ##  6 0.484  0.738          1000     0
-    ##  7 0.278  0.345          1000     0
-    ##  8 0.0397 0.168          1000     0
-    ##  9 0.962  0.150          1000     1
-    ## 10 0.633  0.213          1000     1
-    ## # … with 990 more rows
+    ## # A tibble: 6 × 4
+    ##       x     y total_points  stat
+    ##   <dbl> <dbl>        <dbl> <dbl>
+    ## 1 0.847 0.617         1000     0
+    ## 2 0.957 0.320         1000     0
+    ## 3 0.555 0.155         1000     4
+    ## 4 0.886 0.821         1000     0
+    ## 5 0.272 0.178         1000     4
+    ## 6 0.541 0.908         1000     0
 
 ### **q2** Using your data in `df_q1`, estimate $\pi$.
 
 ``` r
 ## TASK: Estimate pi using your data from q1
-pi_est <- 4* sum(sqrt((df_q1$x)^2 + (df_q1$y)^2) <= 1)/n
+pi_est <- df_q1 %>%
+  pull(stat) %>%
+  mean()
 
 pi_est
 ```
 
-    ## [1] 3.212
+    ## [1] 3.204
 
 # Quantifying Uncertainty
 
@@ -263,7 +258,7 @@ upper <- pi_est + (qnorm(1-0.1/2) * sd(df_q1$stat) / sqrt(n))
 cat(lower, upper)
 ```
 
-    ## 3.185981 3.238019
+    ## 3.120891 3.287109
 
 **Observations**:
 

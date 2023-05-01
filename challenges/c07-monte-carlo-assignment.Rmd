@@ -24,7 +24,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|-------------------|-----------------------------|-------------------------|
+|-------------------|----------------------------|-------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -111,16 +111,19 @@ Remember in `e-stat02-probability` we learned how to estimate probabilities as t
 n <- 1000 # Choose a sample size
 
 # think of coordinate plane, if sqrt(x^2 + y^2) > 1, it's not on the circle.
-df_q1 <- tibble(x = runif(n,0,1), y = runif(n,0,1)) %>%
+df_q1 <- tibble(
+  x = runif(n,0,1),
+  y = runif(n,0,1)) %>%
   mutate(
-    in_circle = ifelse((sqrt(x^2 - y^2) <= 1),1,0),
+    in_circle = ifelse((sqrt(x^2 + y^2) <= 1),4,0),
     
     # SURELY there is a better way to do this
     in_circle = ifelse(is.na(in_circle), 0, in_circle)
          ) %>%
   summarize(x= x, y = y, total_points = n, stat = in_circle)# Generate the data
 
-df_q1 
+df_q1 %>%
+  head()
 
 ```
 
@@ -128,7 +131,9 @@ df_q1
 
 ```{r q2-task}
 ## TASK: Estimate pi using your data from q1
-pi_est <- 4* sum(sqrt((df_q1$x)^2 + (df_q1$y)^2) <= 1)/n
+pi_est <- df_q1 %>%
+  pull(stat) %>%
+  mean()
 
 pi_est
 ```
