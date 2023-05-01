@@ -24,7 +24,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|--------------|----------------------------|-------------------------------|
+|-----------------|--------------------------|-----------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -89,8 +89,6 @@ That's the high-level view; now let's dig into the details.
 ```{r q1-task}
 ## TASK: Load the census bureau data with the following tibble name.
 df_pop <- read_csv("data/ACSDT5Y2018.B01003-Data.csv", skip = 1)
-
-df_pop
 ```
 
 *Note*: You can find information on 1-year, 3-year, and 5-year estimates [here](https://www.census.gov/programs-surveys/acs/guidance/estimates.html). The punchline is that 5-year estimates are more reliable but less current.
@@ -155,7 +153,8 @@ df_q3 <- df_pop %>%
     "fips" = str_sub(id, start = -5),
   )
 
-df_q3
+df_q3 %>%
+  glimpse()
 ```
 
 Use the following test to check your answer.
@@ -177,7 +176,8 @@ print("Very good!")
 ## TASK: Join df_covid and df_q3 by fips.
 df_q4 <- left_join(df_covid, df_q3, by =  "fips")
 
-df_q4
+df_q4%>%
+  glimpse()
 ```
 
 For convenience, I down-select some columns and produce more convenient column names.
@@ -196,7 +196,8 @@ df_data <-
     population = `Estimate!!Total`
   )
 
-df_data
+df_data%>%
+  glimpse()
 ```
 
 # Analyze
@@ -222,7 +223,8 @@ df_normalized <- df_data %>%
     fips = as.numeric(fips)
   )
 
-df_normalized
+df_normalized %>%
+  head() 
 ```
 
 You may use the following test to check your work.
@@ -282,6 +284,7 @@ Before turning you loose, let's complete a couple guided EDA tasks.
 ```{r q6-task}
 res <- df_normalized %>%
   drop_na(cases_per100k,deaths_per100k)%>%
+  filter(date == "2020-12-25") %>%
   summarize(
     "mean_cases" = mean(cases_per100k),
     "sd_cases" = sd(cases_per100k),
@@ -307,27 +310,33 @@ res
 #     cases_per100k,
 #     deaths_per100k
 #   )
-top_cases <- df_normalized %>%
+
+df_christmas_norm <- df_normalized %>%
+   drop_na(cases_per100k,deaths_per100k)%>%
+  filter(date == "2020-12-25")
+
+top_cases <- df_christmas_norm %>%
   group_by(state, county, fips)  %>%
   summarize(max_cases = max(cases_per100k)) %>%
   arrange(desc(max_cases)) 
 
-top_cases
+top_cases %>%
+  head(n=10)
 
-top_death <- df_normalized %>%
+
+top_death <- df_christmas_norm %>%
   group_by(state, county, fips)  %>%
   summarize(max_death = max(deaths_per100k)) %>%
   arrange(desc(max_death))
 
-top_death
+top_death %>%
+  head(n=10)
 ## TASK: Find the top 10 deaths_per100k counties; report populations as well
 ```
 
 **Observations**:
 
--   The counties that top the cases do not top the deaths chart! Interesting, since you'd think that more people getting infected = more people dying.
-
-## Self-directed EDA
+-   The counties that top the cases do not top the deaths chart! Interesting, since you'd think that more people getting infected = more people dying. The mean cases and deaths are much *much* less than the top 10s we see here, although there is a pretty dramatic fall-off even within the top 10. \## Self-directed EDA
 
 <!-- ------------------------- -->
 
