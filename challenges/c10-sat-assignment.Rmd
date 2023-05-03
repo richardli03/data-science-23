@@ -36,7 +36,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category    | Needs Improvement                                                                                                | Satisfactory                                                                                                               |
-|------------------|-----------------------------|-------------------------|
+|-------------|------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
 | Effort      | Some task **q**'s left unattempted                                                                               | All task **q**'s attempted                                                                                                 |
 | Observed    | Did not document observations, or observations incorrect                                                         | Documented correct observations based on analysis                                                                          |
 | Supported   | Some observations not clearly supported by analysis                                                              | All observations clearly supported by analysis (table, graph, etc.)                                                        |
@@ -78,8 +78,10 @@ df_sat <- read_xls("data/sat.xls") %>%
 | `comp_GPA` | computer science GPA          |
 | `univ_GPA` | overall university GPA        |
 
--   What information do we have about these students? We have information on their GPA in high school and university, as well as a specific subsection of that GPA that would be classified "computer science" -- presumably, this is the material that "matters more," given they're graduating with a B.S. in computer science.
--   What kinds of information *do we not have* about these students? Truthfully, we have no idea what kind of students they are, whether they're participating in clubs, creating businesses, starting non-profits, taking care of siblings, what impact their families (or perhaps lack thereof) have on them... it's exactly what students rail against -- we're turning "student quality" into a set of numbers.
+-   What information do we have about these students?
+    -   We have information on their GPA in high school and university, as well as a specific subsection of that GPA that would be classified "computer science" -- presumably, this is the material that "matters more," given they're graduating with a B.S. in computer science.
+-   What kinds of information *do we not have* about these students?
+    -   Truthfully, we have no idea what kind of students they are, whether they're participating in clubs, creating businesses, starting non-profits, taking care of siblings, what impact their families (or perhaps lack thereof) have on them... it's exactly what students rail against -- we're turning "student quality" into a set of numbers.
 -   Based on these missing variables, what possible effects could be present in the data that we would have *no way of detecting*?
     -   Like I mentioned, there are a variety of things that can impact a student's ability to perform on a test + achieve a high grade point average that aren't quantified here. If they experienced a death in the family right before they took the SAT, I would expect them to score lower. If they had to take care of their little siblings every day after school, I wouldn't be shocked if their GPAs were lower. These factors are simply things we have no way of understanding.
 
@@ -109,23 +111,31 @@ df_composite <-
 ```{r q2-task}
 ## TODO:
 
-df_composite %>%
-  ggplot(aes( x= univ_GPA))+
-  geom_point(aes(y = both_SAT), color = "blue") + 
-  geom_point(aes(y = high_GPA), color = "red")
+# df_composite %>%
+#   ggplot(aes( x= univ_GPA))+
+#   geom_point(aes(y = both_SAT), color = "blue") + 
+#   geom_point(aes(y = high_GPA), color = "red")
   # scale_y_continuous(
   # 
   # )
   # WHY IS IT SO IMPOSSIBLE TO GET A SECOND AXIS TO WORK
   
- 
-df_composite %>%
-  ggplot(aes( x= univ_GPA))+
-  geom_point(aes(y = both_SAT), color = "blue")
 
-df_composite %>%
-  ggplot(aes( x= univ_GPA))+
-  geom_point(aes(y = high_GPA), color = "blue") 
+# Comment: THIS IS SO CLEAN AND BEAUTIFUL O-O
+df_composite %>% 
+  pivot_longer( names_to = "predictor", values_to = "value", cols = c(both_SAT, high_GPA) )%>% 
+  ggplot(aes(value, univ_GPA)) + 
+  geom_point() + 
+  geom_smooth() + 
+  facet_grid(~predictor, scales = "free_x")
+
+# df_composite %>%
+#   ggplot(aes( x= univ_GPA))+
+#   geom_point(aes(y = both_SAT), color = "blue")
+# 
+# df_composite %>%
+#   ggplot(aes( x= univ_GPA))+
+#   geom_point(aes(y = high_GPA), color = "blue") 
 ```
 
 **Observations**:
@@ -213,6 +223,18 @@ Finally, let's use the bootstrap to perform the same test using *different* assu
 ```{r q5-task}
 ## TODO: Use the bootstrap to compute a confidence interval for corr[high_GPA, univ_GPA]
 n <- 1000
+
+corr_high_GPA <- function(split) {
+  tibble( 
+  term = "corr", 
+  estimate = cor( 
+    analysis(split) %>%
+      pull(high_GPA), 
+    analysis(split) %>% 
+      pull(univ_GPA) 
+    ) ) } 
+
+## Approximate a bootstrap CI df_composite %>% bootstraps(times = 1000) %>% mutate(estimates = map(splits, corr_high_GPA)) %>% int_pctl(estimates) 
 
 df_q5 <- df_composite %>% 
   bootstraps(times = n)%>%
